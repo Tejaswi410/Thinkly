@@ -1,8 +1,18 @@
 {% extends "layout.html" %}
 
+{% block title %}Logged Out{% endblock %}
+
 {% block content %}
-<h2> You have been Logged out. </h2>
-<a href="{% url 'login' %}">Login again</a>
-
+<div class="d-flex justify-content-center">
+    <div class="card text-center bg-dark shadow-lg border-0" style="width: 100%; max-width: 400px;">
+        <div class="card-body p-4">
+            <h2 class="card-title text-success mb-4 fs-4">You have been logged out.</h2>
+            <p class="card-text text-white mb-4">Thank you for using Thinkly!</p>
+            <div class="d-grid gap-2">
+                <a href="{% url 'login' %}" class="btn btn-primary btn-lg rounded-pill">Login again</a>
+                <a href="{% url 'thought_list' %}" class="btn btn-secondary btn-lg rounded-pill">View all thoughts</a>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
-

@@ -1,32 +1,48 @@
 {% extends "layout.html"%}
 
-{% block title %}Thinkly{% endblock %}
+{% block title %}Thinkly - All Thoughts{% endblock %}
 
 {% block content %}
 
-<h1 class="text-center mt-4">Welcome to Thinkly</h1>
+<div class="text-center my-5">
+    <h1 class="display-5 fw-bold text-info">All Thoughts</h1>
+    <a class="btn btn-primary btn-lg rounded-pill shadow-sm mt-4" href="{% url 'thought_create' %}" role="button">
+        Create a New Thought
+    </a>
+</div>
 
-<a class="btn btn-primary mb-4"
-   href="{% url 'thought_create' %}" role="button">
-   Create a New Thought
-</a>
-
-<div class="container">
-    <div class="row">
+<div class="container-fluid">
+    <div class="row g-4 justify-content-center">
         {% for thought in thoughts %}
-        <div class="card" style="width: 18rem;">
-            {% if thought.photo %}
-            <img src="{{ thought.photo.url }}" class="card-img-top" alt="...">
-            {% endif %}
-            <div class="card-body">
-                <h5 class="card-title">{{ thought.user.username }}</h5>
-                <p class="card-text">{{ thought.text }}</p>
-                {% if thought.user  == user%}
-                <a href="{% url 'thought_edit' thought.id %}" class="btn btn-primary">Edit</a>
-                <a href="{% url 'thought_delete' thought.id %}" class="btn btn-danger">Delete</a>
+        <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
+            <div class="card bg-dark shadow-lg border-0 h-100" style="border-radius: 1.5rem; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                <!-- Conditionally render the image if a photo exists -->
+                {% if thought.photo %}
+                <img src="{{ thought.photo.url }}" class="card-img-top mb-3" alt="{{ thought.text }}" style="object-fit: cover; height: 12rem; border-radius: 1rem;">
                 {% endif %}
+                
+                <div class="card-body p-4">
+                    <h5 class="card-title text-white mb-2">{{ thought.user.username }}</h5>
+                    <p class="card-text text-secondary mb-3">{{ thought.text }}</p>
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="text-muted small">Posted: {{ thought.created_at|date:"F j, Y" }}</span>
+                    </div>
+
+                    {% if thought.user == user %}
+                    <div class="d-flex justify-content-end gap-2">
+                        <a href="{% url 'thought_edit' thought.id %}" class="btn btn-info text-white btn-sm rounded-pill">
+                            Edit
+                        </a>
+                        <a href="{% url 'thought_delete' thought.id %}" class="btn btn-danger text-white btn-sm rounded-pill">
+                            Delete
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
             </div>
         </div>
+        {% empty %}
+        <p class="text-white text-center col-12">No thoughts to display yet. Why don't you create one?</p>
         {% endfor %}
     </div>
 </div>

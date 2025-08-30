@@ -8,12 +8,12 @@ from django.contrib.auth import login
 # Create your views here.
 
 def index(request):
-    return render(request, 'index.html')
+    return render(request, 'modern_thought_feed.html')
 
 #for displaying the thought list
 def thought_list(request):
     thoughts = Thought.objects.all().order_by('-created_at')
-    return render(request, 'thought_list.html',{'thoughts' :thoughts})
+    return render(request, 'modern_thought_feed.html',{'thoughts' :thoughts})
 
 
 #for creating a thought
@@ -55,7 +55,7 @@ def thought_delete(request,thought_id):
     return render(request, 'thought_confirm_delete.html', {'thought' : thought
     })
 
-
+#for registration purpose of the user
 def register(request):
     if request.method == "POST":
         form = UserRegistrationForm(request.POST)
