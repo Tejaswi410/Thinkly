@@ -1,0 +1,34 @@
+{% extends "layout.html"%}
+
+{% block title %}Thinkly{% endblock %}
+
+{% block content %}
+
+<h1 class="text-center mt-4">Welcome to Thinkly</h1>
+
+<a class="btn btn-primary mb-4"
+   href="{% url 'thought_create' %}" role="button">
+   Create a New Thought
+</a>
+
+<div class="container">
+    <div class="row">
+        {% for thought in thoughts %}
+        <div class="card" style="width: 18rem;">
+            {% if thought.photo %}
+            <img src="{{ thought.photo.url }}" class="card-img-top" alt="...">
+            {% endif %}
+            <div class="card-body">
+                <h5 class="card-title">{{ thought.user.username }}</h5>
+                <p class="card-text">{{ thought.text }}</p>
+                {% if thought.user  == user%}
+                <a href="{% url 'thought_edit' thought.id %}" class="btn btn-primary">Edit</a>
+                <a href="{% url 'thought_delete' thought.id %}" class="btn btn-danger">Delete</a>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}
