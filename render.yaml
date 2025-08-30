@@ -1,0 +1,24 @@
+# File: render.yaml
+# This file is a Render Blueprint that defines the services for your application.
+
+services:
+  - type: web
+    name: thinkly
+    env: python
+    buildCommand: "pip install -r requirements.txt && python manage.py collectstatic --noinput"
+    startCommand: "gunicorn Thinkly.wsgi:application"
+    healthCheckPath: /
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: thinkly_db
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: ALLOWED_HOSTS
+        value: "your-render-app-url.onrender.com"
+    autoDeploy: true
+
+databases:
+  - name: thinkly_db
+    plan: free
