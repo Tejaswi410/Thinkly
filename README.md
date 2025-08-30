@@ -5,7 +5,7 @@ Users can **create, edit, and delete** their thoughts, and even **attach images*
 The application features a clean, **responsive UI built with Bootstrap 5**, ensuring a seamless experience on all devices.
 
 <div align="center">
-  <img src="media/photos/demo.png" alt="Thinkly Demo" width="70%">
+  <img src="https://github.com/Tejaswi410/Thinkly/blob/main/demo/Screenshot%202025-08-31%20011803.png" alt="Thinkly Demo" width="70%">
   <br>
   <em>✨ A place to share your thoughts, beautifully.</em>
 </div>
