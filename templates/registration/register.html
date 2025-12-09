@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="card" style="max-width:420px;margin:0 auto;">
+    <h2 style="margin-top:0;">Create account</h2>
+    <form method="post">
+        {% csrf_token %}
+        {% if form.errors %}
+            <div class="toast">
+                Please fix the highlighted fields.
+                {% if form.non_field_errors %}
+                    <div class="muted">{{ form.non_field_errors|join:", " }}</div>
+                {% endif %}
+            </div>
+        {% endif %}
+        <label class="muted" for="{{ form.username.id_for_label }}">Username</label>
+        {{ form.username }}
+        {% if form.username.errors %}
+            <div class="muted" style="color:#ff9b9b;">{{ form.username.errors|join:", " }}</div>
+        {% endif %}
+
+        <label class="muted" for="{{ form.password1.id_for_label }}">Password</label>
+        {{ form.password1 }}
+        {% if form.password1.errors %}
+            <div class="muted" style="color:#ff9b9b;">{{ form.password1.errors|join:", " }}</div>
+        {% endif %}
+
+        <label class="muted" for="{{ form.password2.id_for_label }}">Confirm password</label>
+        {{ form.password2 }}
+        {% if form.password2.errors %}
+            <div class="muted" style="color:#ff9b9b;">{{ form.password2.errors|join:", " }}</div>
+        {% endif %}
+
+        <button class="btn btn-primary" style="width:100%;">Register</button>
+    </form>
+    <p class="muted" style="margin-top:12px;">Already have an account? <a href="{% url 'login' %}">Login</a></p>
+</div>
+{% endblock %}
+

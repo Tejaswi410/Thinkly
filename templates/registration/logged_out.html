@@ -1,0 +1,9 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="card" style="max-width:420px;margin:0 auto;text-align:center;">
+    <h2>You are logged out</h2>
+    <p class="muted">Thanks for visiting Thinkly.</p>
+    <a class="btn btn-primary" href="{% url 'login' %}">Login again</a>
+</div>
+{% endblock %}
+

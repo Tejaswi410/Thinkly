@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+{% block content %}
+<h2>Thoughts</h2>
+<ul>
+    {% for thought in object_list %}
+        <li>{{ thought.display_name }} - {{ thought.body }}</li>
+    {% empty %}
+        <li>No thoughts yet.</li>
+    {% endfor %}
+</ul>
+{% endblock %}
+

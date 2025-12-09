@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="card" style="max-width:420px;margin:0 auto;text-align:center;">
+    <h3>Delete this thought?</h3>
+    <p class="muted">{{ object.body|truncatewords:12 }}</p>
+    <form method="post">
+        {% csrf_token %}
+        <button class="btn btn-primary" style="width:48%;">Yes</button>
+        <a class="btn" style="width:48%; text-align:center;" href="{% url 'thought-list' %}">Cancel</a>
+    </form>
+</div>
+{% endblock %}
+

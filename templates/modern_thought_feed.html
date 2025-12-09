@@ -1,0 +1,77 @@
+{% extends "layout.html" %}
+{% block content %}
+<section class="hero">
+    <h1>Share your <span>Thoughts</span> freely</h1>
+    <p class="tagline">Join the community and see what others are thinking.</p>
+</section>
+
+{% if user.is_authenticated %}
+    <div class="card" style="margin-bottom: 18px; display:flex; align-items:center; justify-content:space-between; gap:12px;">
+        <div>
+            <div style="font-weight:600;">Share something?</div>
+            <div class="muted">Create a new thought with a click.</div>
+        </div>
+        <a class="btn btn-primary" href="{% url 'thought-create' %}">Create Thought</a>
+    </div>
+{% else %}
+    <p class="muted" style="text-align:center;margin-bottom:18px;">Log in to share a thought, like or comment.</p>
+{% endif %}
+
+<div class="grid">
+    {% for thought in thoughts %}
+    <div class="card">
+        <div class="card-header">
+            <div class="avatar{% if not thought.photo %} avatar-ghost{% endif %}">
+                {{ thought.display_name|default:"TG"|slice:":2"|upper }}
+            </div>
+            <div>
+                <div style="font-weight:600;">{{ thought.display_name }}</div>
+                <div class="meta">{{ thought.created_at|date:"M d, Y" }}</div>
+            </div>
+        </div>
+        {% if thought.photo %}
+            <img src="{{ thought.photo.url }}" alt="Photo" class="thumb">
+        {% endif %}
+        <div class="body">{{ thought.body }}</div>
+        <div class="actions">
+            {% if user.is_authenticated %}
+            <form action="{% url 'thought-like' thought.pk %}" method="post" style="display:inline;">
+                {% csrf_token %}
+                <button class="pill" type="submit" style="background:rgba(255,255,255,0.05); color:var(--text); border:1px solid var(--border); cursor:pointer;">🤍 Like <strong style="color:var(--text);">{{ thought.likes }}</strong></button>
+            </form>
+            {% else %}
+                <span class="pill">🤍 Like <strong style="color:var(--text);">{{ thought.likes }}</strong></span>
+            {% endif %}
+            <span class="pill">💬 Comments <strong style="color:var(--text);">{{ thought.comment_count }}</strong></span>
+        </div>
+        <div class="comment">
+            {% if thought.comments.all %}
+                {% for comment in thought.comments.all %}
+                    <div style="margin-bottom:6px;"><strong>{{ comment.author_name }}</strong> <span class="muted">{{ comment.created_at|date:"M d, H:i" }}</span></div>
+                    <div class="muted">{{ comment.body }}</div>
+                {% empty %}
+                    <div class="muted">No comments yet. Start the conversation!</div>
+                {% endfor %}
+            {% endif %}
+            <div style="margin-top:10px;">
+                {% if user.is_authenticated %}
+                    <form action="{% url 'thought-comment' thought.pk %}" method="post">
+                        {% csrf_token %}
+                        {{ comment_form.author_name }}
+                        {{ comment_form.body }}
+                        <button class="btn btn-primary" style="width:100%;">Comment</button>
+                    </form>
+                {% else %}
+                    <div class="muted" style="margin-top:8px;text-align:center;">Log in to like or comment.</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="card">
+        <p class="muted">No thoughts yet. Be the first to share!</p>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
+

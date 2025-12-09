@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="card" style="max-width:720px;margin:0 auto;">
+    <h2 style="margin-top:0;">{{ view.object|default_if_none:"Share a thought" }}</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.display_name }}
+        {{ form.body }}
+        {{ form.photo }}
+        <button class="btn btn-primary" style="width:100%;">Save</button>
+    </form>
+</div>
+{% endblock %}
+
