@@ -1,4 +1,5 @@
 from django.urls import path
+from django.views.generic import RedirectView
 from .views import (
     ThoughtCreateView,
     ThoughtDeleteView,
@@ -13,7 +14,7 @@ from .views import (
 )
 
 urlpatterns = [
-    path("", index, name="home"),
+    path("", RedirectView.as_view(url="/feed/"), name="home"),
     path("feed/", ThoughtListView.as_view(), name="thought-list"),
     path("register/", register, name="register"),
     path("login/", CustomLoginView.as_view(), name="login"),

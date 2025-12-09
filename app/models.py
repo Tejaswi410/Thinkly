@@ -21,6 +21,11 @@ class Thought(models.Model):
     body = models.TextField()
     photo = models.ImageField(upload_to=photo_upload_path, blank=True, null=True)
     likes = models.PositiveIntegerField(default=0)
+    liked_by = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        related_name="liked_thoughts",
+        blank=True,
+    )
     created_at = models.DateTimeField(default=timezone.now)
 
     class Meta:
@@ -29,9 +34,7 @@ class Thought(models.Model):
     def __str__(self) -> str:
         return f"{self.display_name}: {self.body[:40]}"
 
-    @property
-    def comment_count(self) -> int:
-        return self.comments.count()
+
 
 
 class Comment(models.Model):

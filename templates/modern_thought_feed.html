@@ -14,7 +14,7 @@
         <a class="btn btn-primary" href="{% url 'thought-create' %}">Create Thought</a>
     </div>
 {% else %}
-    <p class="muted" style="text-align:center;margin-bottom:18px;">Log in to share a thought, like or comment.</p>
+    <p class="muted" style="text-align:center;margin-bottom:18px;">Log in to share a thought, like, comment, edit, or delete.</p>
 {% endif %}
 
 <div class="grid">
@@ -35,12 +35,18 @@
         <div class="body">{{ thought.body }}</div>
         <div class="actions">
             {% if user.is_authenticated %}
-            <form action="{% url 'thought-like' thought.pk %}" method="post" style="display:inline;">
-                {% csrf_token %}
-                <button class="pill" type="submit" style="background:rgba(255,255,255,0.05); color:var(--text); border:1px solid var(--border); cursor:pointer;">🤍 Like <strong style="color:var(--text);">{{ thought.likes }}</strong></button>
-            </form>
-            {% else %}
-                <span class="pill">🤍 Like <strong style="color:var(--text);">{{ thought.likes }}</strong></span>
+                {% if thought.pk in liked_thought_ids %}
+                    <span class="pill" style="background:rgba(255,255,255,0.05); color:var(--text); border:1px solid var(--border); opacity:0.7;">❤️ Liked <strong style="color:var(--text);">{{ thought.likes }}</strong></span>
+                {% else %}
+                    <form action="{% url 'thought-like' thought.pk %}" method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <button class="pill" type="submit" style="background:rgba(255,255,255,0.05); color:var(--text); border:1px solid var(--border); cursor:pointer;">🤍 Like <strong style="color:var(--text);">{{ thought.likes }}</strong></button>
+                    </form>
+                {% endif %}
+                {% if thought.author == user %}
+                    <a href="{% url 'thought-update' thought.pk %}" class="pill" style="background:rgba(255,255,255,0.05); color:var(--text); border:1px solid var(--border); margin-left:6px;">✏️ Edit</a>
+                    <a href="{% url 'thought-delete' thought.pk %}" class="pill" style="background:rgba(255,0,0,0.08); color:var(--text); border:1px solid var(--border); margin-left:6px;">🗑️ Delete</a>
+                {% endif %}
             {% endif %}
             <span class="pill">💬 Comments <strong style="color:var(--text);">{{ thought.comment_count }}</strong></span>
         </div>
@@ -62,7 +68,7 @@
                         <button class="btn btn-primary" style="width:100%;">Comment</button>
                     </form>
                 {% else %}
-                    <div class="muted" style="margin-top:8px;text-align:center;">Log in to like or comment.</div>
+                    <div class="muted" style="margin-top:8px;text-align:center;">Log in to comment.</div>
                 {% endif %}
             </div>
         </div>

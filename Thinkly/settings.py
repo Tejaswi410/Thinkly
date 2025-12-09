@@ -3,7 +3,14 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "dev-secret-key-please-change")
+SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "8+jhe369p#cjvu=))7-12yl5hf2#5iyp#a8@+b&-wo&1ax#!j9")
+
+if not SECRET_KEY:
+    if DEBUG:
+        print("⚠️  WARNING: Using insecure SECRET_KEY for local development only!")
+        SECRET_KEY = "8+jhe369p#cjvu=))7-12yl5hf2#5iyp#a8@+b&-wo&1ax#!j9"
+    else:
+        raise ValueError("🚨 DJANGO_SECRET_KEY environment variable must be set in production!")
 
 DEBUG = os.environ.get("DJANGO_DEBUG", "true").lower() == "true"
 
@@ -82,5 +89,5 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 LOGIN_REDIRECT_URL = "/feed/"
-LOGOUT_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "/feed/"
 

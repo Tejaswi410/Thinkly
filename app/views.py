@@ -7,6 +7,8 @@ from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse, reverse_lazy
 from django.views.generic import CreateView, DeleteView, ListView, UpdateView
+from django.db.models import Count, F
+from django.contrib.auth.mixins import UserPassesTestMixin
 
 from .forms import CommentForm, StyledAuthenticationForm, ThoughtForm
 from .models import Thought
@@ -17,10 +19,26 @@ class ThoughtListView(ListView):
     template_name = "modern_thought_feed.html"
     context_object_name = "thoughts"
 
+    def get_queryset(self):
+        queryset = Thought.objects.annotate(
+            comment_count=Count('comments')
+        )
+        if self.request.user.is_authenticated:
+            # Annotate whether current user has liked each thought
+            queryset = queryset.prefetch_related('liked_by')
+        return queryset
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["form"] = ThoughtForm()
         context["comment_form"] = CommentForm()
+        # Add liked thoughts set for current user
+        if self.request.user.is_authenticated:
+            context["liked_thought_ids"] = set(
+                Thought.objects.filter(liked_by=self.request.user).values_list('pk', flat=True)
+            )
+        else:
+            context["liked_thought_ids"] = set()
         return context
 
     def post(self, request: HttpRequest, *args, **kwargs):
@@ -52,27 +70,29 @@ class ThoughtCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-class ThoughtUpdateView(LoginRequiredMixin, UpdateView):
+class ThoughtUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Thought
     form_class = ThoughtForm
     template_name = "thought_form.html"
     success_url = reverse_lazy("thought-list")
 
-    def get_queryset(self):
-        return super().get_queryset().filter(author=self.request.user)
+    def test_func(self):
+        thought = self.get_object()
+        return thought.author == self.request.user
 
     def form_valid(self, form):
         messages.success(self.request, "Thought updated.")
         return super().form_valid(form)
 
 
-class ThoughtDeleteView(LoginRequiredMixin, DeleteView):
+class ThoughtDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Thought
     template_name = "thought_confirm_delete.html"
     success_url = reverse_lazy("thought-list")
 
-    def get_queryset(self):
-        return super().get_queryset().filter(author=self.request.user)
+    def test_func(self):
+        thought = self.get_object()
+        return thought.author == self.request.user
 
     def delete(self, request: HttpRequest, *args, **kwargs):
         messages.info(request, "Thought removed.")
@@ -85,8 +105,15 @@ def like_thought(request: HttpRequest, pk: int) -> HttpResponse:
         messages.info(request, "Please use the like button.")
         return redirect("thought-list")
     thought = get_object_or_404(Thought, pk=pk)
-    thought.likes = thought.likes + 1
-    thought.save(update_fields=["likes"])
+    
+    # Check if user has already liked this thought
+    if thought.liked_by.filter(pk=request.user.pk).exists():
+        messages.info(request, "You've already liked this thought!")
+        return redirect("thought-list")
+    
+    # Add like and track the user
+    thought.liked_by.add(request.user)
+    Thought.objects.filter(pk=pk).update(likes=F('likes') + 1)
     messages.success(request, "Thanks for the like!")
     return redirect("thought-list")
 
@@ -138,5 +165,5 @@ class CustomLoginView(LoginView):
 
 
 class CustomLogoutView(LogoutView):
-    next_page = "/"
+    next_page = "/feed/"
 
