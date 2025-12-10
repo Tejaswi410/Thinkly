@@ -6,7 +6,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "8+jhe369p#cjvu=))7-12yl5hf2#5iyp#a8@+b&-wo&1ax#!j9")
 
 if not SECRET_KEY:
-    if DEBUG:
+    if DEBUG: # type: ignore
         print("⚠️  WARNING: Using insecure SECRET_KEY for local development only!")
         SECRET_KEY = "8+jhe369p#cjvu=))7-12yl5hf2#5iyp#a8@+b&-wo&1ax#!j9"
     else:

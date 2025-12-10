@@ -1,11 +1,17 @@
 services:
   - type: web
-    name: thinkly
+    name: thinkly-web
     env: python
+    region: oregon
     plan: free
-    buildCommand: "pip install -r requirements.txt"
-    startCommand: "gunicorn Thinkly.wsgi:application"
-    envVars:
-      - key: PYTHON_VERSION
-        value: 3.12
+    repo: https://github.com/Tejaswi410/Thinkly
+    branch: main
+    buildCommand: pip install -r requirements.txt && python manage.py collectstatic --noinput && python.manage.py migrate --noinput
+    startCommand: gunicorn Thinkly.wsgi:application --bind 0.0.0.0:$PORT
+    
+databases:
+  - name: thinkly-db
+    engine: POSTGRESQL
+    version: 15
+    plan: free
 

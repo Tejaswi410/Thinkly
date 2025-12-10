@@ -30,3 +30,4 @@ urlpatterns = [
     path("thought/<int:pk>/comment/", add_comment, name="thought-comment"),
 ]
 
+

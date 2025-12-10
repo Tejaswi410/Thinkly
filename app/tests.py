@@ -7,3 +7,4 @@ class HealthCheckTests(TestCase):
         response = self.client.get(reverse("thought-list"))
         self.assertEqual(response.status_code, 200)
 
+
