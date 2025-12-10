@@ -7,7 +7,7 @@ services:
     startCommand: "gunicorn Thinkly.wsgi:application"
     envVars:
       - key: PYTHON_VERSION
-        value: 3.12
+        value: 3.12.3
       - key: DJANGO_DEBUG
         value: false
       - key: DJANGO_SECRET_KEY
