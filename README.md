@@ -6,6 +6,12 @@
 [![Python](https://img.shields.io/badge/Python-3.10+-blue.svg)](https://www.python.org/)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
+<div align="center">
+  <img src="screenshots/feed.png" alt="Feed" width="400"/>
+  <img src="screenshots/thought creation.png" alt="Thought creation" width="400"/>
+   <img src="screenshots/authentication.png" alt="Authentication" width="400"/>
+</div>
+
 Thinkly is a minimalist social media platform that lets users share their thoughts, upload photos, interact through likes and comments. Built with Django and featuring a sleek, modern UI with glassmorphism effects.
 
 ## ✨ Features
@@ -30,8 +36,8 @@ Thinkly is a minimalist social media platform that lets users share their though
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/thinkly.git
-   cd thinkly
+   git clone https://github.com/Tejaswi410/Thinkly.git
+   cd Thinkly
    ```
 
 2. **Create a virtual environment**
@@ -91,6 +97,7 @@ thinkly/
 │   ├── modern_thought_feed.html
 │   └── registration/         # Auth templates
 ├── media/                    # Uploaded files
+├── screenshots/              # Screenshots for README file
 ├── staticfiles/              # Collected static files
 ├── manage.py                 # Django management script
 ├── requirements.txt          # Python dependencies
@@ -137,65 +144,6 @@ thinkly/
 - Smooth animations and hover effects
 - Custom SVG logo with thought bubble design
 
-## ⚙️ Configuration
-
-### Environment Variables
-
-Create a `.env` file in the project root:
-
-```env
-DJANGO_SECRET_KEY=your-secret-key-here
-DJANGO_DEBUG=true
-DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1
-```
-
-### Generate a Secret Key
-
-```bash
-python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"
-```
-
-## 🚢 Deployment
-
-### Deploy to Render
-
-1. Push your code to GitHub
-2. Connect your repository to Render
-3. Set environment variables in Render dashboard:
-   - `DJANGO_SECRET_KEY`
-   - `DJANGO_DEBUG=false`
-   - `DJANGO_ALLOWED_HOSTS=your-domain.onrender.com`
-4. Render will automatically deploy using `render.yaml`
-
-### Production Checklist
-
-- [ ] Set `DEBUG=False` in production
-- [ ] Configure `ALLOWED_HOSTS` with your domain
-- [ ] Use a strong, random `SECRET_KEY`
-- [ ] Set up a production database (PostgreSQL recommended)
-- [ ] Configure static file serving
-- [ ] Set up media file storage (S3 recommended)
-- [ ] Enable HTTPS
-- [ ] Set up error monitoring
-
-## 🧪 Testing
-
-Run the test suite:
-
-```bash
-python manage.py test
-```
-
-## 📸 Screenshots
-
-### Feed View
-The main feed displays all thoughts in a beautiful masonry grid layout with like and comment counts.
-
-### Thought Creation
-Users can share thoughts with optional photo uploads through an intuitive form.
-
-### Authentication
-Clean, modern login and registration pages with proper validation.
 
 ## 🤝 Contributing
 
@@ -214,23 +162,6 @@ Contributions are welcome! Here's how you can help:
 - Update documentation as needed
 - Use type hints where appropriate
 
-## 🐛 Known Issues & Solutions
-
-### IDE Warning: "Cannot access attribute 'comments'"
-This is a linting warning and doesn't affect functionality. Django automatically creates reverse relations. To fix:
-
-```python
-# Add to models.py
-from typing import TYPE_CHECKING
-if TYPE_CHECKING:
-    from django.db.models import QuerySet
-    
-class Thought(models.Model):
-    # ... existing fields ...
-    if TYPE_CHECKING:
-        comments: QuerySet['Comment']
-```
-
 ## 📝 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
@@ -241,14 +172,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - Modern UI design inspiration from contemporary social platforms
 - Inter font family by Rasmus Andersson
 
-## 📧 Contact
-
-Your Name - [@yourusername](https://twitter.com/yourusername)
-
-Project Link: [https://github.com/yourusername/thinkly](https://github.com/yourusername/thinkly)
-
----
-
-<div align="center">
-  <strong>Built with ❤️ using Django</strong>
-</div>
