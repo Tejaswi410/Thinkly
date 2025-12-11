@@ -13,6 +13,9 @@ from django.contrib.auth.mixins import UserPassesTestMixin
 from .forms import CommentForm, StyledAuthenticationForm, ThoughtForm
 from .models import Thought
 
+from django.http import HttpResponse
+from django.contrib.auth import get_user_model
+
 
 class ThoughtListView(ListView):
     model = Thought
@@ -78,7 +81,7 @@ class ThoughtUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
     def test_func(self):
         thought = self.get_object()
-        return thought.author == self.request.user
+        return thought.author == self.request.user # type: ignore
 
     def form_valid(self, form):
         messages.success(self.request, "Thought updated.")
@@ -92,7 +95,7 @@ class ThoughtDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
     def test_func(self):
         thought = self.get_object()
-        return thought.author == self.request.user
+        return thought.author == self.request.user # type: ignore
 
     def delete(self, request: HttpRequest, *args, **kwargs):
         messages.info(request, "Thought removed.")
@@ -167,3 +170,15 @@ class CustomLoginView(LoginView):
 class CustomLogoutView(LogoutView):
     next_page = "/feed/"
 
+
+def create_admin(request):
+    User = get_user_model()
+    if User.objects.filter(username="admin").exists():
+        return HttpResponse("Admin already exists")
+
+    User.objects.create_superuser(
+        username="admin",
+        email="tejaswi40yadav@gmail.com",
+        password="Admin@123"   # choose a strong password
+    )
+    return HttpResponse("Admin created successfully!")
