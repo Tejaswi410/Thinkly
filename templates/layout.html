@@ -48,6 +48,10 @@
             font-weight: 700;
             font-size: 21px;
             color: var(--text);
+            transition: opacity 0.2s ease;
+        }
+        .brand:hover {
+            opacity: 0.8;
         }
         .brand-icon {
             width: 40px;
@@ -197,6 +201,17 @@
         .logout-form .btn {
             margin-left: 0;
         }
+        .notice-banner {
+            background: linear-gradient(135deg, rgba(255,196,0,0.15), rgba(255,145,0,0.15));
+            border: 1px solid rgba(255,196,0,0.3);
+            padding: 12px 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .notice-banner strong {
+            color: #ffd700;
+        }
         @media (max-width: 1280px) {
             .grid { grid-template-columns: repeat(3, 1fr); }
         }
@@ -213,7 +228,7 @@
 <body>
     <header>
         <!-- Simple Thinkly logo: speech-bubble + three dots (thoughts) + wordmark -->
-        <div class="brand">
+        <a href="{% url 'thought-list' %}" class="brand" style="text-decoration: none;">
             <div class="brand-icon" aria-hidden="true">
                 <svg width="40" height="36" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Thinkly logo">
                     <defs>
@@ -247,7 +262,7 @@
 
             <!-- Wordmark -->
             <span class="wordmark">Thinkly</span>
-        </div>
+        </a>
 
         <nav>
             {% if user.is_authenticated %}
