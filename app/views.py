@@ -13,10 +13,7 @@ from django.contrib.auth.mixins import UserPassesTestMixin
 from .forms import CommentForm, StyledAuthenticationForm, ThoughtForm
 from .models import Thought
 
-#temporary 
-from django.http import HttpResponse
-from django.contrib.auth import get_user_model
-import os
+
 
 
 
@@ -174,52 +171,3 @@ class CustomLogoutView(LogoutView):
     next_page = "/feed/"
 
 
-def create_admin(request):
-    User = get_user_model()
-    if User.objects.filter(username="admin").exists():
-        return HttpResponse("Admin already exists")
-
-    User.objects.create_superuser(
-        username="Dexter Morgan",
-        email="tejaswi14.work@gmail.com",
-        password="P@ssw0rd14"   # choose a strong password
-    )
-    return HttpResponse("Admin created successfully!")
-
-
-
-def reset_admin(request):
-    """
-    Secure one-time admin-reset endpoint.
-    Requires query param ?token=SECRET that matches env ADMIN_CREATION_TOKEN.
-    It will set the 'admin' user's password and ensure is_staff/is_superuser = True.
-    Visit once, then DELETE this view & url and remove the env var.
-    """
-    ENV_TOKEN = os.environ.get("ADMIN_CREATION_TOKEN")
-    req_token = request.GET.get("token")
-
-    # If an ENV token is configured, require it. If not set, deny request.
-    if not ENV_TOKEN:
-        return HttpResponse("Admin reset not enabled (missing ADMIN_CREATION_TOKEN)", status=403)
-    if req_token != ENV_TOKEN:
-        return HttpResponse("Forbidden (invalid token)", status=403)
-
-    User = get_user_model()
-    try:
-        user = User.objects.get(username="admin")
-    except User.DoesNotExist:
-        return HttpResponse("Admin user does not exist", status=404)
-
-    # Set a new strong password here (replace before visiting)
-    NEW_PASSWORD = os.environ.get("ADMIN_NEW_PASSWORD", "TempAdmin@12345")
-
-    user.set_password(NEW_PASSWORD)
-    user.is_staff = True
-    user.is_superuser = True
-    user.save()
-
-    # IMPORTANT: The response includes the temporary password so you can copy it.
-    return HttpResponse(
-        f"Admin user updated. Username: admin | Temporary password: {NEW_PASSWORD}\n"
-        "Immediately remove this endpoint and the ADMIN_CREATION_TOKEN env var after use."
-    )
