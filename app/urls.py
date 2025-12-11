@@ -13,9 +13,6 @@ from .views import (
     register,
 )
 
-#temporary
-from django.urls import path
-from app.views import create_admin,reset_admin
 
 urlpatterns = [
     path("", RedirectView.as_view(url="/feed/"), name="home"),
@@ -30,8 +27,6 @@ urlpatterns = [
         ThoughtDeleteView.as_view(),
         name="thought-delete",
     ),
-    path("create-admin/", create_admin),  #temporary
-    path("reset-admin/", reset_admin),      #temporary
     path("thought/<int:pk>/like/", like_thought, name="thought-like"),
     path("thought/<int:pk>/comment/", add_comment, name="thought-comment"),
 ]
