@@ -19,7 +19,7 @@ class Thought(models.Model):
     )
     display_name = models.CharField(max_length=50, default="Anonymous")
     body = models.TextField()
-    photo = models.ImageField(upload_to=photo_upload_path, blank=True, null=True)
+    photo = models.ImageField(upload_to=photo_upload_path, blank=True, null=True) # type: ignore
     likes = models.PositiveIntegerField(default=0)
     liked_by = models.ManyToManyField(
         settings.AUTH_USER_MODEL,

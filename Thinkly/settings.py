@@ -1,20 +1,13 @@
 import os
 from pathlib import Path
-import dj_database_url
-import cloudinary
-import cloudinary.uploader
-import cloudinary.api
+import dj_database_url 
+import cloudinary   
+import cloudinary.uploader  
+import cloudinary.api    
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "8+jhe369p#cjvu=))7-12yl5hf2#5iyp#a8@+b&-wo&1ax#!j9")
-
-if not SECRET_KEY:
-    if DEBUG: # type: ignore
-        print("⚠️  WARNING: Using insecure SECRET_KEY for local development only!")
-        SECRET_KEY = "8+jhe369p#cjvu=))7-12yl5hf2#5iyp#a8@+b&-wo&1ax#!j9"
-    else:
-        raise ValueError("🚨 DJANGO_SECRET_KEY environment variable must be set in production!")
+SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", " ")
 
 DEBUG = os.environ.get("DJANGO_DEBUG", "true").lower() == "true"
 
@@ -100,16 +93,11 @@ cloudinary.config(
     secure=True
 )
 
-# Use Cloudinary for media files in production, local storage in development
+# Use Cloudinary for media files in production
 if os.environ.get('CLOUDINARY_CLOUD_NAME'):
     DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-    MEDIA_URL = '/media/'
-else:
-    # Local development
-    MEDIA_URL = "/media/photos/"
-    MEDIA_ROOT = BASE_DIR / "media/photos"
+
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
 LOGIN_REDIRECT_URL = "/feed/"
 LOGOUT_REDIRECT_URL = "/feed/"
