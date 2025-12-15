@@ -7,9 +7,9 @@
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 <div align="center">
-  <img src="screenshots/feed.png" alt="Feed" width="400"/>
-  <img src="screenshots/thought creation.png" alt="Thought creation" width="400"/>
-   <img src="screenshots/authentication.png" alt="Authentication" width="400"/>
+  <img src="static/screenshots/feed.png" alt="Feed" width="400"/>
+  <img src="static/screenshots/thought creation.png" alt="Thought creation" width="400"/>
+   <img src="static/screenshots/authentication.png" alt="Authentication" width="400"/>
 </div>
 
 Thinkly is a minimalist social media platform that lets users share their thoughts, upload photos, interact through likes and comments. Built with Django and featuring a sleek, modern UI with glassmorphism effects.
