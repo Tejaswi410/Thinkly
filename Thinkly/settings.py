@@ -11,7 +11,7 @@ SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", " ")
 
 DEBUG = os.environ.get("DJANGO_DEBUG", "true").lower() == "true"
 
-ALLOWED_HOSTS: list[str] = os.environ.get("DJANGO_ALLOWED_HOSTS", "*").split(",")
+ALLOWED_HOSTS = [".koyeb.app","localhost","127.001"]
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -61,16 +61,15 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": "postgres",
-        "USER": os.environ["SUPABASE_DB_USER"],
-        "PASSWORD": os.environ["SUPABASE_DB_PASSWORD"],
-        "HOST": os.environ["SUPABASE_DB_HOST"],
-        "PORT": "6543",
+        "USER": "postgres",
+        "PASSWORD": os.environ.get("DATABASE_PASSWORD"),
+        "HOST": os.environ.get("DATABASE_HOST"),
+        "PORT": "5432",
         "OPTIONS": {
             "sslmode": "require",
         },
     }
 }
-
 
 
 AUTH_PASSWORD_VALIDATORS = [
