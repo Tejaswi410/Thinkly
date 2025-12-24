@@ -59,7 +59,15 @@ WSGI_APPLICATION = "Thinkly.wsgi.application"
 ASGI_APPLICATION = "Thinkly.asgi.application"
 
 DATABASES = {
-    'default': dj_database_url.config(conn_max_age=0, ssl_require=True)}
+    'default': dj_database_url.config(
+        conn_max_age=0, 
+        ssl_require=True
+    )
+}
+
+DATABASES['default']['OPTIONS'] = {
+    'prepare_threshold': 0,
+}
 
 
 AUTH_PASSWORD_VALIDATORS = [

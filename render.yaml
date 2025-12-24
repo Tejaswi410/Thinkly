@@ -3,15 +3,17 @@ services:
     name: thinkly
     env: python
     plan: free
-    buildCommand: "pip install -r requirements.txt && python manage.py collectstatic --no-input && python manage.py migrate"
-    startCommand: "gunicorn Thinkly.wsgi:application"
+    buildCommand: "pip install -r requirements.txt && python manage.py collectstatic --no-input"
+    startCommand: "python manage.py migrate && gunicorn Thinkly.wsgi:application"
     envVars:
       - key: PYTHON_VERSION
         value: 3.12.3
       - key: DJANGO_DEBUG
-        value: false
+        value: "false"
       - key: DJANGO_SECRET_KEY
         generateValue: true
+      - key: DATABASE_URL 
+        sync: false
       - key: DJANGO_ALLOWED_HOSTS
         sync: false
       - key: CLOUDINARY_CLOUD_NAME
@@ -20,9 +22,3 @@ services:
         sync: false
       - key: CLOUDINARY_API_SECRET
         sync: false
-    
-databases:
-  - name: thinkly-db
-    plan: free
-    databaseName: thinkly
-    user: thinkly
