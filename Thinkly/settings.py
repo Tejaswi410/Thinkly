@@ -11,7 +11,8 @@ SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", " ")
 
 DEBUG = os.environ.get("DJANGO_DEBUG", "true").lower() == "true"
 
-ALLOWED_HOSTS = [".koyeb.app","localhost","127.001"]
+ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "localhost, 127.0.0.1, .onrender.com").split(",")
+
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -58,18 +59,7 @@ WSGI_APPLICATION = "Thinkly.wsgi.application"
 ASGI_APPLICATION = "Thinkly.asgi.application"
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": "postgres",
-        "USER": "postgres",
-        "PASSWORD": os.environ.get("DATABASE_PASSWORD"),
-        "HOST": os.environ.get("DATABASE_HOST"),
-        "PORT": "5432",
-        "OPTIONS": {
-            "sslmode": "require",
-        },
-    }
-}
+    'default': dj_database_url.config(conn_max_age=0, ssl_require=True)}
 
 
 AUTH_PASSWORD_VALIDATORS = [
