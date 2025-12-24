@@ -65,10 +65,6 @@ DATABASES = {
     )
 }
 
-DATABASES['default']['OPTIONS'] = {
-    'prepare_threshold': 0,
-}
-
 
 AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
