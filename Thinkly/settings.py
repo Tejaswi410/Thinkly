@@ -58,8 +58,19 @@ WSGI_APPLICATION = "Thinkly.wsgi.application"
 ASGI_APPLICATION = "Thinkly.asgi.application"
 
 DATABASES = {
-    "default": dj_database_url.config(default="sqlite:///db.sqlite3", conn_max_age=600)
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "postgres",
+        "USER": "postgres",
+        "PASSWORD": os.environ.get("SUPABASE_DB_PASSWORD"),
+        "HOST": os.environ.get("SUPABASE_DB_HOST"),
+        "PORT": "5432",
+        "OPTIONS": {
+            "sslmode": "require",
+        },
+    }
 }
+
 
 AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
