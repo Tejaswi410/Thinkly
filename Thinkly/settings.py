@@ -61,15 +61,16 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": "postgres",
-        "USER": "postgres",
-        "PASSWORD": os.environ.get("SUPABASE_DB_PASSWORD"),
-        "HOST": os.environ.get("SUPABASE_DB_HOST"),
-        "PORT": "5432",
+        "USER": os.environ["SUPABASE_DB_USER"],
+        "PASSWORD": os.environ["SUPABASE_DB_PASSWORD"],
+        "HOST": os.environ["SUPABASE_DB_HOST"],
+        "PORT": "6543",
         "OPTIONS": {
             "sslmode": "require",
         },
     }
 }
+
 
 
 AUTH_PASSWORD_VALIDATORS = [
